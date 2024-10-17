@@ -8,4 +8,6 @@ Request request = new Request.Builder().url(cwanGptUploadUrl).post(body)
 java.lang.NoSuchMethodError: 'void com.fasterxml.jackson.core.util.BufferRecycler.releaseToPool()'
 	Exception encountered during context initialization - cancelling refresh attempt: org.springframework.context.ApplicationContextException: Unable to start web server; nested exception is org.springframework.boot.web.context.MissingWebServerFactoryBeanException: No qualifying bean of type 'org.springframework.boot.web.servlet.server.ServletWebServerFactory' available: Unable to start AnnotationConfigServletWebServerApplicationContext due to missing ServletWebServerFactory bean
 
+Web application could not be started as there was no org.springframework.boot.web.servlet.server.ServletWebServerFactory bean defined in the context.
+
 
