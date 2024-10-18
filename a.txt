@@ -11,3 +11,9 @@ java.lang.NoSuchMethodError: 'void com.fasterxml.jackson.core.util.BufferRecycle
 Web application could not be started as there was no org.springframework.boot.web.servlet.server.ServletWebServerFactory bean defined in the context.
 
 
+git config pull.rebase false  # merge
+hint:   git config pull.rebase true   # rebase
+hint:   git config pull.ff only       # fast-forward only
+
+
+
