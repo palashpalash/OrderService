@@ -17,3 +17,84 @@ hint:   git config pull.ff only       # fast-forward only
 
 
 
+
+
+
+
+public int minOperations(int n) {
+
+        if(n==0)
+            return 0;
+        Set<Integer> set = new HashSet<>();
+        int value=1;
+        int maxNumber=0;
+        int minNumber=Integer.MAX_VALUE;
+        for(int i=0;i<n;i++){
+
+            maxNumber=Math.max(maxNumber,value);
+            minNumber=Math.min(minNumber,value);
+            set.add(value);
+            if(value==n)
+                return 1;
+            if(value>n)
+                break;
+            value*=2;
+
+
+        }
+        Map<Integer,Long> map = new HashMap<>();
+        Set<Integer> inoperation=new HashSet<>();
+        inoperation.add(n);
+        long ans= minOperation(n,set,map,maxNumber,inoperation);
+        return (int)ans;
+
+
+    }
+
+    private long minOperation(int n, Set<Integer> set, Map<Integer, Long> map,int maxNumber,Set<Integer> inoperation) {
+
+        if(n==0)
+            return 0;
+        if(n>maxNumber)
+            return Integer.MAX_VALUE;
+        if(n<0)
+            return Integer.MAX_VALUE;
+
+        if(map.containsKey(n))
+            return map.get(n);
+        Iterator<Integer> iterator = set.iterator();
+        long min=Long.MAX_VALUE;
+        while(iterator.hasNext()){
+            int value = iterator.next();
+            if(map.containsKey(n+value))
+            min=Math.min(min,1+map.get(n+value));
+            else {
+                if(inoperation.contains(n+value))
+                    continue;
+                inoperation.add(n+value);
+                long result=minOperation(n+value,set,map,maxNumber,inoperation);
+                map.put(n+value,result);
+                inoperation.remove(n+value);
+
+                min=Math.min(min,1+map.get(n+value));
+            }
+            // minus
+            if(map.containsKey(n-value) )
+                min=Math.min(min,1+map.get(n-value));
+            else {
+                if(inoperation.contains(n-value))
+                    continue;
+                inoperation.add(n-value);
+                long result=minOperation(n-value,set,map,maxNumber,inoperation);
+                map.put(n-value,result);
+                inoperation.remove(n-value);
+
+                min=Math.min(min,1+map.get(n-value));
+            }
+        }
+        return min;
+        //https://leetcode.com/problems/minimum-operations-to-reduce-an-integer-to-0/submissions/1463282670/
+    }
+
+
+
