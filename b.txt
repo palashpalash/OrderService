@@ -1,0 +1,40 @@
+<dependencies>
+    <!-- AWS SDK BOM (Bill of Materials) -->
+    <dependency>
+        <groupId>software.amazon.awssdk</groupId>
+        <artifactId>bom</artifactId>
+        <version>2.20.42</version> <!-- Use the version matching your AWS SDK -->
+        <type>pom</type>
+        <scope>import</scope>
+    </dependency>
+
+    <!-- AWS SDK Core -->
+    <dependency>
+        <groupId>software.amazon.awssdk</groupId>
+        <artifactId>auth</artifactId>
+    </dependency>
+
+    <!-- AWS SDK for SSO -->
+    <dependency>
+        <groupId>software.amazon.awssdk</groupId>
+        <artifactId>sso</artifactId>
+    </dependency>
+
+    <!-- AWS Regions API -->
+    <dependency>
+        <groupId>software.amazon.awssdk</groupId>
+        <artifactId>regions</artifactId>
+    </dependency>
+
+    <!-- SLF4J for logging (optional but recommended) -->
+    <dependency>
+        <groupId>org.slf4j</groupId>
+        <artifactId>slf4j-api</artifactId>
+        <version>2.0.9</version>
+    </dependency>
+    <dependency>
+        <groupId>org.slf4j</groupId>
+        <artifactId>slf4j-simple</artifactId>
+        <version>2.0.9</version> <!-- Use slf4j implementation of your choice -->
+    </dependency>
+</dependencies>
