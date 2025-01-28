@@ -97,4 +97,70 @@ public int minOperations(int n) {
     }
 
 
+//////// CODE /////////////
+
+
+import software.amazon.awssdk.auth.credentials.AwsSessionCredentials;
+import software.amazon.awssdk.auth.credentials.AwsCredentials;
+import software.amazon.awssdk.auth.credentials.SsoCredentialsProvider;
+import software.amazon.awssdk.regions.Region;
+import software.amazon.awssdk.services.sso.SsoClient;
+import software.amazon.awssdk.services.sso.model.GetRoleCredentialsRequest;
+import software.amazon.awssdk.services.sso.model.GetRoleCredentialsResponse;
+import software.amazon.awssdk.services.sso.model.ListAccountsRequest;
+import software.amazon.awssdk.services.sso.model.ListAccountsResponse;
+import software.amazon.awssdk.services.sso.model.RoleInfo;
+
+public class AwsSsoWithoutCli {
+
+    public static void main(String[] args) {
+        // Replace with your SSO details
+        String ssoStartUrl = "https://your-sso-portal.awsapps.com/start";
+        String ssoRegion = "us-east-1";
+        String accountId = "123456789012"; // Target AWS account ID
+        String roleName = "AWSAdministratorAccess"; // Role to assume
+
+        Region region = Region.of(ssoRegion);
+
+        // Initialize the SSO Client
+        try (SsoClient ssoClient = SsoClient.builder()
+                .region(region)
+                .build()) {
+
+            // STEP 1: Authenticate and fetch available accounts
+            ListAccountsResponse accountsResponse = ssoClient.listAccounts(
+                    ListAccountsRequest.builder()
+                            .accessToken(getAccessToken(ssoStartUrl))
+                            .build()
+            );
+
+            // STEP 2: Fetch role credentials for the desired account and role
+            GetRoleCredentialsResponse credentialsResponse = ssoClient.getRoleCredentials(
+                    GetRoleCredentialsRequest.builder()
+                            .accessToken(getAccessToken(ssoStartUrl))
+                            .accountId(accountId)
+                            .roleName(roleName)
+                            .build()
+            );
+
+            // STEP 3: Extract credentials
+            AwsSessionCredentials credentials = AwsSessionCredentials.create(
+                    credentialsResponse.roleCredentials().accessKeyId(),
+                    credentialsResponse.roleCredentials().secretAccessKey(),
+                    credentialsResponse.roleCredentials().sessionToken()
+            );
+
+            // Print credentials
+            System.out.println("AWS Access Key ID: " + credentials.accessKeyId());
+            System.out.println("AWS Secret Access Key: " + credentials.secretAccessKey());
+            System.out.println("AWS Session Token: " + credentials.sessionToken());
+        }
+    }
+
+    private static String getAccessToken(String ssoStartUrl) {
+        // Placeholder for fetching access token dynamically
+        // Implement token retrieval based on your SSO portal configuration
+        throw new UnsupportedOperationException("Implement token fetching logic here.");
+    }
+}
 
